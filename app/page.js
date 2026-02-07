@@ -99,8 +99,8 @@ export default function NutrifarmDelight() {
                 <Mail className="w-4 h-4" />
                 <span>Email Us</span>
                </a>
-              <a href="https://www.store.nutrifarmdelight.in" >
-                <Store className="w-6 h-6" />
+              <a href="https://www.store.nutrifarmdelight.in" className="text-gray-700 hover:text-green-600 transition">
+                <Store className="w-8 h-8" />
               </a>
             </div>
 
