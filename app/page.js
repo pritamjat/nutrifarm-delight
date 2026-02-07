@@ -101,6 +101,7 @@ export default function NutrifarmDelight() {
               <a href="store.nutrifarmdelight.in" className="flex items-center space-x-2">
                 <Store className="w-6 h-6" />
               </a>
+              </a>
             </div>
 
             {/* Mobile Menu Button */}
