@@ -98,6 +98,8 @@ export default function NutrifarmDelight() {
               <a href="mailto:bhoomidelight@gmail.com" className="flex items-center space-x-2 bg-green-600 text-white px-4 py-2 rounded-full hover:bg-green-700 transition">
                 <Mail className="w-4 h-4" />
                 <span>Email Us</span>
+              <a href="store.nutrifarmdelight.in" className="flex items-center space-x-2">
+                <Store className="w-6 h-6" />
               </a>
             </div>
 
