@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Leaf, Award, Menu, X, ChevronRight, Heart, Shield, Sprout, Mail, MessageCircle } from 'lucide-react';
+import { Leaf, Award, Menu, X, ChevronRight, Heart, Shield, Sprout, Mail, Store, MessageCircle } from 'lucide-react';
 
 export default function NutrifarmDelight() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
