@@ -1,13 +1,24 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Leaf, Award, Menu, X, ChevronRight, Heart, Shield, Sprout, Mail, Store, MessageCircle } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Leaf, Award, Menu, X, ChevronRight, Heart, Shield, Sprout, Mail, Store, MessageCircle, ShoppingBag, ExternalLink } from 'lucide-react';
 
 export default function NutrifarmDelight() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showWhatsAppTooltip, setShowWhatsAppTooltip] = useState(false);
+  const [showStorePopup, setShowStorePopup] = useState(false);
+  const [showStoreBanner, setShowStoreBanner] = useState(true);
 
   const whatsappNumber = "918368821279";
+  const storeUrl = "https://store.nutrifarmdelight.in";
+
+  // Show popup after 4 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowStorePopup(true);
+    }, 4000);
+    return () => clearTimeout(timer);
+  }, []);
 
   const products = [
     { name: 'Apni Chai', category: 'Tea', image: '🍵' },
@@ -41,9 +52,85 @@ export default function NutrifarmDelight() {
     }
   ];
 
-  
   return (
     <div className="min-h-screen bg-white">
+
+      {/* ── STORE POPUP ── */}
+      {showStorePopup && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center px-4" style={{backgroundColor: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(3px)'}}>
+          <div className="relative bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden"
+               style={{animation: 'popIn 0.35s cubic-bezier(0.175,0.885,0.32,1.275)'}}>
+            {/* Green top bar */}
+            <div className="bg-green-600 px-6 py-4 text-white text-center">
+              <ShoppingBag className="w-10 h-10 mx-auto mb-2 opacity-90" />
+              <p className="text-sm font-medium tracking-widest uppercase opacity-80">Now Live</p>
+              <h2 className="text-2xl font-bold mt-1">Our Online Store is Open!</h2>
+            </div>
+
+            {/* Body */}
+            <div className="px-8 py-6 text-center">
+              <p className="text-gray-600 leading-relaxed mb-6">
+                Shop our full range of pure, natural products — Apni Chai, spices, pulses, snacks, and more — delivered straight to your door.
+              </p>
+
+              {/* Product emoji strip */}
+              <div className="flex justify-center gap-3 text-3xl mb-6">
+                {['🍵','🌶️','🫘','🌾','🍝','🥜'].map((e, i) => (
+                  <span key={i} style={{animation: `bounce 0.6s ease ${i * 0.08}s both`}}>{e}</span>
+                ))}
+              </div>
+
+              <a
+                href={storeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-full transition-all duration-200 hover:shadow-lg hover:scale-105 text-lg"
+              >
+                <Store className="w-5 h-5" />
+                Shop Now
+                <ExternalLink className="w-4 h-4 opacity-70" />
+              </a>
+
+              <button
+                onClick={() => setShowStorePopup(false)}
+                className="mt-4 text-sm text-gray-400 hover:text-gray-600 transition"
+              >
+                Maybe later
+              </button>
+            </div>
+
+            {/* Close icon */}
+            <button
+              onClick={() => setShowStorePopup(false)}
+              className="absolute top-3 right-3 text-white opacity-70 hover:opacity-100 transition"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ── TOP ANNOUNCEMENT BANNER ── */}
+      {showStoreBanner && (
+        <div className="bg-orange-500 text-white text-sm py-2 px-4 text-center relative">
+          <span>🛍️ Our online store is now live! </span>
+          <a
+            href={storeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline font-semibold hover:text-orange-100 transition ml-1"
+          >
+            Shop at store.nutrifarmdelight.in →
+          </a>
+          <button
+            onClick={() => setShowStoreBanner(false)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 opacity-70 hover:opacity-100 transition"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+      )}
+
       {/* Floating WhatsApp Button */}
       <div className="fixed bottom-6 right-6 z-50">
         <a 
@@ -54,16 +141,11 @@ export default function NutrifarmDelight() {
           onMouseEnter={() => setShowWhatsAppTooltip(true)}
           onMouseLeave={() => setShowWhatsAppTooltip(false)}
         >
-          {/* Pulsing Rings Animation */}
           <div className="absolute inset-0 rounded-full bg-green-500 animate-ping opacity-75"></div>
           <div className="absolute inset-0 rounded-full bg-green-500 animate-pulse"></div>
-          
-          {/* Main Button */}
           <div className="relative bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110">
             <MessageCircle className="w-8 h-8" />
           </div>
-          
-          {/* Tooltip */}
           {showWhatsAppTooltip && (
             <div className="absolute right-full mr-4 top-1/2 transform -translate-y-1/2 bg-gray-900 text-white px-4 py-2 rounded-lg whitespace-nowrap shadow-lg">
               Chat with us on WhatsApp
@@ -73,13 +155,25 @@ export default function NutrifarmDelight() {
         </a>
       </div>
 
+      {/* ── FLOATING STORE BUTTON (bottom-left) ── */}
+      <div className="fixed bottom-6 left-6 z-50">
+        <a
+          href={storeUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-5 py-3 rounded-full shadow-lg font-semibold transition-all duration-300 hover:scale-105 hover:shadow-xl"
+        >
+          <ShoppingBag className="w-5 h-5" />
+          <span>Visit Store</span>
+        </a>
+      </div>
+
       {/* Header */}
       <header className="bg-white shadow-sm sticky top-0 z-50">
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center -m-20 ">
               <img src='logo.svg' alt="Logo" width="140" />
-              {/*<Leaf className="w-8 h-8 text-green-600" />*/}
               <div className="-m-7">
               <span className="text-2xl font-bold text-orange-600 ">N</span>
               <span className="text-2xl font-bold text-green-800">utrifarm</span>
@@ -147,6 +241,16 @@ export default function NutrifarmDelight() {
               <a href="#about" className="bg-white text-green-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-50 transition border-2 border-green-600">
                 About Us
               </a>
+              {/* ── HERO STORE CTA ── */}
+              <a
+                href={storeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-orange-500 text-white px-8 py-3 rounded-full font-semibold hover:bg-orange-600 transition inline-flex items-center justify-center gap-2 shadow-md"
+              >
+                <ShoppingBag className="w-5 h-5" />
+                Shop Online
+              </a>
             </div>
           </div>
         </div>
@@ -170,8 +274,6 @@ export default function NutrifarmDelight() {
             </div>
             <div >
               <div className="text-center">
-                {/*<Leaf className="w-32 h-32 text-green-600 mx-auto mb-4" />
-                <p className="text-2xl font-semibold text-green-900">From Farm to Family</p>*/}
                 <img src='apnichai.jpeg' alt="Logo" width="500"  />
               </div>
             </div>
@@ -215,6 +317,21 @@ export default function NutrifarmDelight() {
                 <p className="text-green-600 font-medium">{product.category}</p>
               </div>
             ))}
+          </div>
+
+          {/* ── PRODUCTS SECTION STORE CTA ── */}
+          <div className="mt-12 text-center">
+            <p className="text-gray-500 mb-4">Want to order? Visit our online store for easy delivery.</p>
+            <a
+              href={storeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold px-10 py-4 rounded-full transition-all duration-200 hover:shadow-lg hover:scale-105 text-lg"
+            >
+              <Store className="w-5 h-5" />
+              Order from Our Store
+              <ExternalLink className="w-4 h-4 opacity-70" />
+            </a>
           </div>
         </div>
       </section>
@@ -267,7 +384,6 @@ export default function NutrifarmDelight() {
             <div>
               <div className="flex items-center space-x-2 mb-4">
                 <img src='logo.svg' alt="Logo" width="140" />
-               {/* <Leaf className="w-8 h-8 text-green-400" />*/}
                 <span className="text-xl font-bold -m-8">Nutrifarm Delight</span>
               </div>
               <p className="text-gray-400">Pure, natural, and trusted food products for your family.</p>
@@ -279,6 +395,11 @@ export default function NutrifarmDelight() {
                 <li><a href="#products" className="text-gray-400 hover:text-white transition">Products</a></li>
                 <li><a href="#values" className="text-gray-400 hover:text-white transition">Our Values</a></li>
                 <li><a href="#contact" className="text-gray-400 hover:text-white transition">Contact</a></li>
+                <li>
+                  <a href={storeUrl} target="_blank" rel="noopener noreferrer" className="text-orange-400 hover:text-orange-300 transition font-medium">
+                    🛍️ Online Store
+                  </a>
+                </li>
               </ul>
             </div>
             <div>
@@ -294,6 +415,19 @@ export default function NutrifarmDelight() {
           </div>
         </div>
       </footer>
+
+      {/* Keyframe animations */}
+      <style>{`
+        @keyframes popIn {
+          from { opacity: 0; transform: scale(0.85); }
+          to   { opacity: 1; transform: scale(1); }
+        }
+        @keyframes bounce {
+          0%   { opacity: 0; transform: translateY(10px); }
+          60%  { transform: translateY(-4px); }
+          100% { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
     </div>
   );
 }
